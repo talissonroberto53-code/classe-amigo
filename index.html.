@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classe de Amigo - Offline</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; color: #333; }
+        .card { background: white; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        h2 { color: #e67e22; border-bottom: 2px solid #eee; padding-bottom: 5px; }
+        .item { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #eee; }
+        input[type="checkbox"] { width: 20px; height: 20px; margin-right: 15px; }
+        .btn-envio { background: #25d366; color: white; border: none; padding: 15px; width: 100%; border-radius: 5px; font-weight: bold; cursor: pointer; position: fixed; bottom: 10px; left: 0; }
+    </style>
+</head>
+<body>
+
+    <h1>Classe de Amigo</h1>
+    <p>O progresso é salvo automaticamente no seu celular (mesmo offline).</p>
+
+    <div class="card">
+        <h2>I - Geral</h2>
+        <div class="item"><input type="checkbox" id="it1"> <label>Ter 10 anos / Membro Ativo</label></div>
+        <div class="item"><input type="checkbox" id="it2"> <label>Memorizar Voto e Lei</label></div>
+        <div class="item"><input type="checkbox" id="it3"> <label>Ler "Vaso de Barro"</label></div>
+    </div>
+
+    <div class="card">
+        <h2>II - Descoberta Espiritual</h2>
+        <div class="item"><input type="checkbox" id="it4"> <label>7 Dias da Criação</label></div>
+        <div class="item"><input type="checkbox" id="it5"> <label>10 Pragas do Egito</label></div>
+    </div>
+
+    <button class="btn-envio" onclick="enviar()">ENVIAR RELATÓRIO PARA O LÍDER</button>
+
+    <script>
+        // SALVAMENTO AUTOMÁTICO OFFLINE
+        const inputs = document.querySelectorAll('input[type="checkbox"]');
+        
+        // Carrega o que já foi marcado antes
+        inputs.forEach(input => {
+            if (localStorage.getItem(input.id) === 'true') input.checked = true;
+            
+            input.onclick = () => {
+                localStorage.setItem(input.id, input.checked);
+            };
+        });
+
+        // FUNÇÃO PARA VOCÊ ACOMPANHAR A EQUIPE
+        function enviar() {
+            let nome = prompt("Qual o seu nome?");
+            if(!nome) return;
+            
+            let mensagem = `Progresso de Amigo - ${nome}:\n\n`;
+            inputs.forEach(input => {
+                if(input.checked) {
+                    mensagem += `✅ ${input.nextElementSibling.innerText}\n`;
+                }
+            });
+
+            // Substitua pelo SEU número com DDD (ex: 5511999999999)
+            const meuZap = "5511999999999"; 
+            window.open(`https://api.whatsapp.com/send?phone=${meuZap}&text=${encodeURIComponent(mensagem)}`);
+        }
+    </script>
+</body>
+</html>
